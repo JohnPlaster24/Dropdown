@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Triage Website</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    textarea {
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Triage Website</h1>
+
+<div class="container">
+  <select id="first-dropdown">
+    <option value="">Select Option</option>
+    <option value="option1">Option 1</option>
+    <option value="option2">Option 2</option>
+  </select>
+
+  <select id="second-dropdown">
+    <option value="">Select Option</option>
+  </select>
+
+  <select id="third-dropdown">
+    <option value="">Select Option</option>
+  </select>
+
+  <textarea id="notes" rows="4" cols="50" readonly></textarea>
+  <input type="text" id="selection-display" readonly>
+  <button onclick="copyText()">Copy</button>
+  <button onclick="resetAll()">Reset</button>
+</div>
+
+<script>
+  $(document).ready(function() {
+    $('#first-dropdown').change(function() {
+      updateSelectionDisplay();
+      var selectedOption = $(this).val();
+      var options = {
+        option1: ['Option 1.1', 'Option 1.2', 'Option 1.3'],
+        option2: ['Option 2.1', 'Option 2.2', 'Option 2.3']
+      };
+      populateDropdown('#second-dropdown', options[selectedOption]);
+    });
+
+    $('#second-dropdown').change(function() {
+      updateSelectionDisplay();
+      var selectedOption = $(this).val();
+      var options = {
+        'Option 1.1': ['Option 1.1.1', 'Option 1.1.2', 'Option 1.1.3'],
+        'Option 1.2': ['Option 1.2.1', 'Option 1.2.2', 'Option 1.2.3'],
+        'Option 1.3': ['Option 1.3.1', 'Option 1.3.2', 'Option 1.3.3'],
+        'Option 2.1': ['Option 2.1.1', 'Option 2.1.2', 'Option 2.1.3'],
+        'Option 2.2': ['Option 2.2.1', 'Option 2.2.2', 'Option 2.2.3'],
+        'Option 2.3': ['Option 2.3.1', 'Option 2.3.2', 'Option 2.3.3']
+      };
+      populateDropdown('#third-dropdown', options[selectedOption]);
+    });
+
+    $('#third-dropdown').change(function() {
+      updateSelectionDisplay();
+      var selectedOption = $(this).val();
+      var notes = {
+        'Option 1.1.1': 'Notes for Option 1.1.1',
+        'Option 1.1.2': 'Notes for Option 1.1.2',
+        'Option 1.1.3': 'Notes for Option 1.1.3',
+        'Option 1.2.1': 'Notes for Option 1.2.1',
+        'Option 1.2.2': 'Notes for Option 1.2.2',
+        'Option 1.2.3': 'Notes for Option 1.2.3',
+        'Option 1.3.1': 'Notes for Option 1.3.1',
+        'Option 1.3.2': 'Notes for Option 1.3.2',
+        'Option 1.3.3': 'Notes for Option 1.3.3',
+        'Option 2.1.1': 'Notes for Option 2.1.1',
+        'Option 2.1.2': 'Notes for Option 2.1.2',
+        'Option 2.1.3': 'Notes for Option 2.1.3',
+        'Option 2.2.1': 'Notes for Option 2.2.1',
+        'Option 2.2.2': 'Notes for Option 2.2.2',
+        'Option 2.2.3': 'Notes for Option 2.2.3',
+        'Option 2.3.1': 'Notes for Option 2.3.1',
+        'Option 2.3.2': 'Notes for Option 2.3.2',
+        'Option 2.3.3': 'Notes for Option 2.3.3'
+      };
+      $('#notes').val(notes[selectedOption]);
+    });
+
+    function populateDropdown(dropdownId, options) {
+      $(dropdownId).empty();
+      $(dropdownId).append('<option value="">Select Option</option>');
+      options.forEach(function(option) {
+        $(dropdownId).append('<option value="' + option + '">' + option + '</option>');
+      });
+    }
+
+    function updateSelectionDisplay() {
+      var first = $('#first-dropdown').val();
+      var second = $('#second-dropdown').val();
+      var third = $('#third-dropdown').val();
+      var displayText = (first ? first : '') + 
+                        (second ? ': ' + second : '') + 
+                        (third ? ': ' + third : '');
+      $('#selection-display').val(displayText);
+    }
+
+    window.resetAll = function() {
+      $('#first-dropdown').val('');
+      $('#second-dropdown').empty().append('<option value="">Select Option</option>');
+      $('#third-dropdown').empty().append('<option value="">Select Option</option>');
+      $('#notes').val('');
+      $('#selection-display').val('');
+    }
+
+    window.copyText = function() {
+      var copyText = document.getElementById("selection-display");
+      copyText.select();
+      copyText.setSelectionRange(0, 99999); /* For mobile devices */
+      document.execCommand("copy");
+      alert("Copied the text: " + copyText.value);
+    }
+  });
+</script>
+
+</body>
+</html>
